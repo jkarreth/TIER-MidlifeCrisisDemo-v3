@@ -1,0 +1,1540 @@
+parallel::detectCores()
+?parallel::detectCores
+mb.stanarm <-(mod.stanarm <- stan_glmer(y ~ x + (1|grps),#
+                                                       data = dat,#
+                                                       family = binomial(link = 'logit'),#
+                                                       prior = t_prior,#
+                                                       prior_intercept = t_prior,#
+                                                       chains = 4, cores = 4, seed = 10),#
+                             times = 1L)
+mb.stanarm <-(mod.stanarm <- stan_glmer(y ~ x + (1|grps),#
+                                                       data = dat,#
+                                                       family = binomial(link = 'logit'),#
+                                                       prior = t_prior,#
+                                                       prior_intercept = t_prior,#
+                                                       chains = 4, cores = 4, seed = 10)
+)
+N <- 100 #num sites#
+G <- 5#
+coef1 <- 3#
+int <- -2#
+set.seed(22)#
+x <- runif(N)#
+#
+alpha_mu <- 0#
+sigma <- 1#
+set.seed(1)#
+alpha <- rnorm(G, mean = alpha_mu, sd = sigma)#
+grps <- rep(1:G, each = N/G)#
+#
+set.seed(50)#
+y <- yprob <-  numeric(N)#
+for (n in 1:N){#
+  ymean <- int + (coef1*x[n]) + (alpha[grps[n]])#
+  yprob[n] <- 1/(1+exp(-ymean))#
+  y[n] <- rbinom(1, 1, yprob[n])#
+}#
+#
+dat <- data.frame(y = y, x = x, grps =grps)
+mb.stanarm <-mod.stanarm <- stan_glmer(y ~ x + (1|grps),#
+                                                       data = dat,#
+                                                       family = binomial(link = 'logit'),#
+                                                       prior = t_prior,#
+                                                       prior_intercept = t_prior,#
+                                                       chains = 4, cores = 4, seed = 10)
+summary(mb.stanarm)
+library("googlesheets")#
+my_sheets <- gs_ls()#
+d <- gs_title("Blood sugar (Responses)")#
+df <- gs_read(d, ws = "Form Responses 1")#
+d <- as.data.frame(df)#
+d$timepoint <- factor(d$`Time of day`,levels=c("Morning (after waking up)", "Breakfast (1h after start)", "Lunch (1h after start)", "Dinner (1h after start)"))#
+#
+source("~/R/Source/JKmisc/theme_jk.R")#
+#
+ggplot(data = d, aes(x = timepoint, y = Value, group = Date)) + geom_point(alpha = 0.35) + geom_segment(x = 0.75, y = 95, xend = 1.25, yend = 95, color = "red") + geom_segment(x = 1.75, y = 140, xend = 4.25, yend = 140, color = "red") + xlab("") + ylab("mg/dL")  + theme_jk()
+library("googlesheets")#
+my_sheets <- gs_ls()#
+d <- gs_title("Blood sugar (Responses)")#
+df <- gs_read(d, ws = "Form Responses 1")#
+d <- as.data.frame(df)#
+d$timepoint <- factor(d$`Time of day`,levels=c("Morning (after waking up)", "Breakfast (1h after start)", "Lunch (1h after start)", "Dinner (1h after start)"))#
+#
+source("~/R/Source/JKmisc/theme_jk.R")#
+#
+ggplot(data = d, aes(x = timepoint, y = Value, group = Date)) + geom_point(aes(color = Date), alpha = 0.35) + geom_segment(x = 0.75, y = 95, xend = 1.25, yend = 95, color = "red") + geom_segment(x = 1.75, y = 140, xend = 4.25, yend = 140, color = "red") + xlab("") + ylab("mg/dL")  + theme_jk()
+ggplot(data = d, aes(x = timepoint, y = Value, group = Date)) + geom_point(aes(color = Date, shape = Date), alpha = 0.35) + geom_segment(x = 0.75, y = 95, xend = 1.25, yend = 95, color = "red") + geom_segment(x = 1.75, y = 140, xend = 4.25, yend = 140, color = "red") + xlab("") + ylab("mg/dL")  + theme_jk()
+ggplot(data = d, aes(x = timepoint, y = Value, group = Date)) + geom_point(aes(color = Date, label = Date), alpha = 0.35) + geom_segment(x = 0.75, y = 95, xend = 1.25, yend = 95, color = "red") + geom_segment(x = 1.75, y = 140, xend = 4.25, yend = 140, color = "red") + xlab("") + ylab("mg/dL")  + theme_jk()
+ggplot(data = d, aes(x = timepoint, y = Value, group = Date)) + geom_text(aes(color = Date, label = Date), alpha = 0.35) + geom_segment(x = 0.75, y = 95, xend = 1.25, yend = 95, color = "red") + geom_segment(x = 1.75, y = 140, xend = 4.25, yend = 140, color = "red") + xlab("") + ylab("mg/dL")  + theme_jk()
+ggplot(data = d, aes(x = timepoint, y = Value, group = Date)) + geom_text(aes(color = Date, label = Date), alpha = 0.35) + geom_segment(x = 0.75, y = 95, xend = 1.25, yend = 95, color = "red") + geom_segment(x = 1.75, y = 140, xend = 4.25, yend = 140, color = "red") + xlab("") + ylab("mg/dL")  + theme_jk() + guides(color = FALSE)
+ggplot(data = d, aes(x = timepoint, y = Value, group = Date)) + geom_text(aes(color = Date, label = Date), alpha = 0.5, size = 4) + geom_segment(x = 0.75, y = 95, xend = 1.25, yend = 95, color = "red") + geom_segment(x = 1.75, y = 140, xend = 4.25, yend = 140, color = "red") + xlab("") + ylab("mg/dL")  + theme_jk() + guides(color = FALSE)
+ggplot(data = d, aes(x = timepoint, y = Value, group = Date)) + geom_text(aes(color = Date, label = Date), alpha = 0.5, size = 3) + geom_segment(x = 0.75, y = 95, xend = 1.25, yend = 95, color = "red") + geom_segment(x = 1.75, y = 140, xend = 4.25, yend = 140, color = "red") + xlab("") + ylab("mg/dL")  + theme_jk() + guides(color = FALSE)
+ggplot(data = d, aes(x = timepoint, y = Value, group = Date)) + geom_text(aes(color = Date, label = Date), alpha = 0.75, size = 3) + geom_segment(x = 0.75, y = 95, xend = 1.25, yend = 95, color = "red") + geom_segment(x = 1.75, y = 140, xend = 4.25, yend = 140, color = "red") + xlab("") + ylab("mg/dL")  + theme_jk() + guides(color = FALSE)
+library("googlesheets")#
+my_sheets <- gs_ls()#
+fb <- gs_title("Fahrtenbuch für Felix the Fit")#
+fb <- gs_read(fb, ws = "Form Responses 1")#
+d <- as.data.frame(fb)#
+d$Date2 <- gsub(" .*$", "", d$Timestamp)#
+d$Date2 <- ifelse(is.na(d$Date2), d$Date, d$Date2)#
+d$day <- as.Date(d$Date2, format = "%m/%d/%Y")#
+#
+d$philadelphia <- ifelse(d$day > "2014-08-04", 1, 0)#
+d$MPG2 <- ifelse(d$MPG > 50, NA, d$MPG)#
+#
+library(ggplot2)#
+source("~/R/Source/JKmisc/theme_jk.R")#
+ggplot(data = d, aes(x = day, y = MPG2)) + geom_point(size = 0.5) + geom_smooth(aes(group = factor(philadelphia)), size = 0.5, method = "loess", span = 0.5) + xlab("") + ylab("Miles per gallon") + theme_jk()
+?rio::import
+foo <- rio::import()
+foo <- rio::import(file=clipboard)
+foo <- clipr::read_clip()
+foo <- rio::read_clip())
+foo <- rio::read_clip()
+foo <- rio::import(file="~/Desktop/foo.csv")
+foo
+dim(foo)
+head(foo)
+hist(foo[, 6])
+hist(foo[, 6], breaks = 10)
+hist(foo[, 6], breaks = 10, col = "red")
+length(foo)
+length(foo[, 6])
+hist(foo[, 6], breaks = 20, col = "red")
+load("/Users/johanneskarreth/Documents/Dropbox/Uni/1 - Papers/DISS/Paper/2nd submission/II submission/Replication/Output/m1_stanglm.RData")
+summary(m1_stanglm)
+str(m1_stanglm)
+4/4
+3.82/4
+3.6/4
+3.63/4
+3.78/4
+3.59/4
+3.90/4
+3.95/4
+3.71/4
+### Course eval plot#
+#
+library(ggplot2)#
+source("http://www.jkarreth.net/files/theme_jk.R")#
+dat <- read.csv("/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/Evaluation/evals.csv")#
+dat <- dat[dat$IoR == 1 & is.na(dat$IoR) == FALSE, ]#
+# dat$CourseName <- gsub(pattern = "\\n", replacement = "\n", x = dat$CourseName, fixed = TRUE)#
+dat$CourseName <- gsub(pattern = "\\n", replacement = " ", x = dat$CourseName, fixed = TRUE)#
+#
+p1 <- ggplot(dat, aes(x = Instructor, y = as.factor(CourseID), colour = as.factor(IoR), label = Instructor))#
+p1 <- p1 + geom_point(shape = 19, size = 2) #
+p1 <- p1 + geom_segment(aes(x = InstDeptAvg, xend = Instructor, y = (CourseID), yend = (CourseID)), linetype = "dotted") + geom_point(aes(x = InstDeptAvg, y = (CourseID)), shape = 21, fill = "white", size = 2)#
+p1 <- p1 + scale_y_discrete(breaks = dat$CourseID, labels=dat$CourseName) + geom_text(hjust = -0.25, vjust = 0.35, size = 4) #
+p1 <- p1 + theme_jk() + xlab("Students' rating (0-100)") + ylab("") + theme(legend.position = "none") + scale_colour_manual(values = c("0"= "grey50", "1" = "black")) + xlim(0, 100) + ggtitle("Instructor rating overall")#
+p1 <- p1 + annotate("text", x = 27, y = 1.5, label = "Department/Campus average", size = 4, colour = "black", hjust = 0) + annotate("text", x = 27, y = 2.5, label = "My score", size = 4, colour = "black", hjust = 0) + annotate("point", x = 25, y = 1.5, shape = 21) + annotate("point", x = 25, y = 2.5, shape = 19) + annotate("text", x = 2.5, y = dat$CourseID, label = paste(dat$Enrolled," students"), size = 3.5)#
+#
+p2 <- ggplot(dat, aes(x = Course, y = as.factor(CourseID), colour = as.factor(IoR), label = Course))#
+p2 <- p2 + geom_point(shape = 19, size = 2)#
+p2 <- p2 + geom_segment(aes(x = CourseDeptAvg, xend = Course, y = (CourseID), yend = (CourseID)), linetype = "dotted") + geom_point(aes(x = CourseDeptAvg, y = (CourseID)), shape = 21, fill = "white", size = 2)#
+p2 <- p2 + theme_jk() + xlab("Students' rating (0-100)") + ylab("") + scale_colour_manual(values = c("0"= "grey50", "1" = "black")) + xlim(0, 100) + theme(legend.position = "none") + geom_text(hjust = -0.25, vjust = 0.35, size = 4) #
+p2 <- p2 + scale_y_discrete(breaks=dat$CourseID, labels=dat$CourseName) + ggtitle("Course rating overall")#
+p2 <- p2 + annotate("text", x = 27, y = 1.5, label = "Department/Campus average", size = 4, colour = "black", hjust = 0) + annotate("text", x = 27, y = 2.5, label = "My score", size = 4, colour = "black", hjust = 0) + annotate("point", x = 25, y = 1.5, shape = 21) + annotate("point", x = 25, y = 2.5, shape = 19) + annotate("text", x = 2.5, y = dat$CourseID, label = paste(dat$Enrolled," students"), size = 3.5)#
+#
+p3 <- ggplot(dat, aes(x = Interest, y = as.factor(CourseID), colour = as.factor(IoR), label = Interest))#
+p3 <- p3 + geom_point(shape = 19, size = 2)#
+p3 <- p3 + geom_segment(aes(x = InterestDeptAvt, xend = Interest, y = (CourseID), yend = (CourseID)), linetype = "dotted") + geom_point(aes(x = InterestDeptAvt, y = (CourseID)), shape = 21, fill = "white", size = 2)#
+p3 <- p3 + theme_jk() + xlab("Students' rating (0-100)") + ylab("") + scale_colour_manual(values = c("0"= "grey50", "1" = "black")) + xlim(0, 100) + theme(legend.position = "none") + geom_text(hjust = -0.25, vjust = 0.35, size = 4) #
+p3 <- p3 + scale_y_discrete(breaks=dat$CourseID, labels=dat$CourseName) + ggtitle("Instructor's effectiveness encouraging interest")#
+p3 <- p3 + annotate("text", x = 27, y = 1.5, label = "Department/Campus average", size = 4, colour = "black", hjust = 0) + annotate("text", x = 27, y = 2.5, label = "My score", size = 4, colour = "black", hjust = 0) + annotate("point", x = 25, y = 1.5, shape = 21) + annotate("point", x = 25, y = 2.5, shape = 19) + annotate("text", x = 2.5, y = dat$CourseID, label = paste(dat$Enrolled," students"), size = 3.5)#
+#
+library(gridExtra)
+grid.arrange(p1, p2, p3, nrow = 3)
+pdf("/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/Teaching portfolio/evals.pdf", width = 11, height = 9.5)#
+p <- grid.arrange(p1, p2, p3, nrow = 3)#
+dev.off()
+dat <- read.csv("/Users/johanneskarreth/Documents/Dropbox/Uni/1 - Papers/DISS/Data/Work/claims.csv")#
+library(reshape2)#
+dat$type <- ifelse(dat$terriss == 1, "Territory",#
+                   ifelse(dat$riveriss == 1, "River",#
+                          ifelse(dat$mariss == 1, "Maritime", NA)))#
+dat.is <- reshape2::melt(dat[, c("type", "salint", "saltan", "icowsal")], id.vars = "type")#
+library(ggplot2)#
+devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/theme_jk.R")#
+p <- ggplot(data = dat.is, aes(x = factor(value))) + geom_bar() + facet_grid(type ~ variable, scales = "free") + xlab("Value") + ylab("Claims") + theme_jk()#
+p
+ggsave(p, file = "/Users/johanneskarreth/Documents/Dropbox/Uni/1 - Papers/DISS/Paper/2nd submission/II submission/icow_salience.pdf", width = 10, height = 8)
+library("googlesheets")#
+my_sheets <- gs_ls()#
+d <- gs_title("Blood sugar (Responses)")#
+df <- gs_read(d, ws = "Form Responses 1")#
+d <- as.data.frame(df)#
+d$timepoint <- factor(d$`Time of day`,levels=c("Morning (after waking up)", "Breakfast (1h after start)", "Lunch (1h after start)", "Dinner (1h after start)"))#
+#
+source("~/R/Source/JKmisc/theme_jk.R")
+ggplot(data = d, aes(x = timepoint, y = Value, group = Date)) + geom_point(alpha = 0.35) + geom_segment(x = 0.75, y = 95, xend = 1.25, yend = 95, color = "red") + geom_segment(x = 1.75, y = 140, xend = 4.25, yend = 140, color = "red") + xlab("") + ylab("mg/dL")  + theme_jk()
+ggplot(data = d, aes(x = timepoint, y = Value, group = Date)) + geom_text(aes(color = Date, label = Date), alpha = 0.75, size = 3) + geom_segment(x = 0.75, y = 95, xend = 1.25, yend = 95, color = "red") + geom_segment(x = 1.75, y = 140, xend = 4.25, yend = 140, color = "red") + xlab("") + ylab("mg/dL")  + theme_jk() + guides(color = FALSE)
+33/42
+35/43
+24/42
+35/42
+32/42
+install_github("joshua-james-f/MCMCtab")
+devtools::install_github("joshua-james-f/MCMCtab")
+?MCMCtab::table
+help(package = "MCMCtab")
+latex_t
+MCMCtab::latex_t
+MCMCtab::coda_sims
+coda_sims
+remove.packages("MCMCtab")
+MCMCtab::coda_sims
+help(package = "MCMCtab")
+library("wnominate")
+knitr::purl(input = "/Users/johanneskarreth/Documents/Dropbox/Uni/9 - ICPSR/2017/Applied Bayes/Slides (Jo)/Day 10/bayes2017_day10.Rnw", output = "/Users/johanneskarreth/Documents/Dropbox/Uni/9 - ICPSR/2017/Applied Bayes/Slides (Jo)/Day 10/bayes2017_day10_code.R")
+library(dplyr)
+library(plyr)
+library(dplyr)
+dat <- read.csv("/Users/johanneskarreth/Documents/Dropbox/Uni/9 - ICPSR/2017/Applied Bayes/Participants/bayes.2017.participants.csv", header = T, nrows = 19)#
+#
+pdf("/Users/johanneskarreth/Documents/Dropbox/Uni/9 - ICPSR/2017/Applied Bayes/Participants/bayes.2017.participants.pdf", width = 9, height = 6.5)#
+plot(dat$Day, dat$P2017, xlim = c(1,20), ylim = c(0,60), type = "n", xlab = "Day", ylab = "Participants", axes = FALSE)#
+axis(1, at = c(seq(1, 19, by = 1)), labels = TRUE, cex.axis = 0.75)#
+axis(2, at = c(seq(0, 60, by = 10)), labels = TRUE, cex.axis = 0.75, las = 1)#
+grid()#
+lines(x = dat$Day, y = dat$P2016, col = rgb(231, 41, 138, alpha = 100, maxColorValue = 255), lwd = 1)#
+lines(x = dat$Day, y = dat$P2015, col = rgb(117, 112, 179, alpha = 100, maxColorValue = 255), lwd = 1)#
+lines(x = dat$Day, y = dat$P2014, col = rgb(217, 95, 2, alpha = 100, maxColorValue = 255), lwd = 1)#
+lines(x = dat$Day, y = dat$P2013, col = rgb(230, 171, 2, alpha = 100, maxColorValue = 255), lwd = 1)#
+lines(x = dat$Day, y = dat$P2012, col = rgb(102, 166, 30, alpha = 100, maxColorValue = 255), lwd = 1)#
+lines(x = dat$Day, y = dat$P2011, col = rgb(27, 158, 119, alpha = 100, maxColorValue = 255), lwd = 1)#
+# lines(dat$Day, dat$P2016, col = rgb(231, 41, 138, alpha = 255, maxColorValue = 255), lwd = 1)#
+lines(dat$Day, dat$P2017, col = rgb(0, 0, 0, alpha = 255, maxColorValue = 255), lwd = 1)#
+points(dat$Day, dat$H2017, col = rgb(0, 0, 0, alpha = 255, maxColorValue = 255), pch = c("HW"), cex = 0.5)#
+# points(dat$Day, dat$P2013, pch = 19)#
+# points(dat$Day, dat$H2015, col = rgb(, alpha = 100, maxColorValue = 255), pch = c("HW"))#
+# points(dat$Day, dat$H2014, col = rgb(, alpha = 100, maxColorValue = 255), pch = c("HW"))#
+text(x = 18.5, y = median(dat$P2012[4:15], na.rm = TRUE), "2012", col = rgb(102, 166, 30, alpha = 100, maxColorValue = 255), cex = 0.5)#
+text(x = 18.5, y = median(dat$P2011[4:15], na.rm = TRUE), "2011", col = rgb(27, 158, 119, alpha = 100, maxColorValue = 255), cex = 0.5)#
+text(x = 18.5, y = median(dat$P2013[4:15], na.rm = TRUE), "2013", col = rgb(230, 171, 2, alpha = 100, maxColorValue = 255), cex = 0.5)#
+text(x = 18.5, y = median(dat$P2014[4:15], na.rm = TRUE), "2014", col = rgb(217, 95, 2, alpha = 100, maxColorValue = 255), cex = 0.5)#
+text(x = 18.5, y = median(dat$P2015[4:15], na.rm = TRUE), "2015", col = rgb(117, 112, 179, alpha = 100, maxColorValue = 255), cex = 0.5)#
+text(x = 18.5, y = median(dat$P2016[4:15], na.rm = TRUE), "2016", col = rgb(231, 41, 138, alpha = 255, maxColorValue = 255), cex = 0.5)#
+text(x = 18.5, y = median(dat$P2017[4:15], na.rm = TRUE), "2017", col = rgb(0, 0, 0, alpha = 255, maxColorValue = 255), cex = 0.5)#
+text(x = 18.5, y = 50, "Median attendance", col = "black", cex = 0.75)#
+dev.off()
+Megapoll <- read.dta("http://www.princeton.edu/~jkastell/MRP_primer/gay_marriage_megapoll.dta", convert.underscore = TRUE)
+Megapoll <- foreign::read.dta("http://www.princeton.edu/~jkastell/MRP_primer/gay_marriage_megapoll.dta", convert.underscore = TRUE)
+Census <- read.dta("http://www.princeton.edu/~jkastell/MRP_primer/poststratification%202000.dta",convert.underscore = TRUE)
+Census <- foreign::read.dta("http://www.princeton.edu/~jkastell/MRP_primer/poststratification%202000.dta",convert.underscore = TRUE)
+Statelevel <- foreign::read.dta("http://www.princeton.edu/~jkastell/MRP_primer/state_level_update.dta",convert.underscore = TRUE)
+d <- url("http://www.jkarreth.net/files/individual_fit.Rdata")#
+load(d)
+str(d)
+str(individual.mcmc <- as.mcmc(individual.fit)#
+# save(individual.mcmc, file = "/Users/johanneskarreth/Documents/Uni/9 - ICPSR/2015/Applied Bayes/Slides (new)/Day 19/MRP/individual_mcmc.Rdata")#
+#
+## Create data frame of posterior draws for further processing#
+individual.out <- as.data.frame(as.matrix(individual.mcmc))#
+#
+## ----echo = FALSE, fig.width = 15, fig.height = 11, out.width = '.99\\linewidth'----#
+plot(individual.fit)#
+)
+individual.mcmc <- as.mcmc(individual.fit)#
+# save(individual.mcmc, file = "/Users/johanneskarreth/Documents/Uni/9 - ICPSR/2015/Applied Bayes/Slides (new)/Day 19/MRP/individual_mcmc.Rdata")#
+#
+## Create data frame of posterior draws for further processing#
+individual.out <- as.data.frame(as.matrix(individual.mcmc))#
+#
+## ----echo = FALSE, fig.width = 15, fig.height = 11, out.width = '.99\\linewidth'----#
+plot(individual.fit)
+library(R2jags)
+individual.mcmc <- as.mcmc(individual.fit)#
+# save(individual.mcmc, file = "/Users/johanneskarreth/Documents/Uni/9 - ICPSR/2015/Applied Bayes/Slides (new)/Day 19/MRP/individual_mcmc.Rdata")#
+#
+## Create data frame of posterior draws for further processing#
+individual.out <- as.data.frame(as.matrix(individual.mcmc))#
+#
+## ----echo = FALSE, fig.width = 15, fig.height = 11, out.width = '.99\\linewidth'----#
+plot(individual.fit)
+??bayesglmer
+?blme::blmer
+data("sleepstudy", package = "lme4")#
+(fm1 <- blmer(Reaction ~ Days + (0 + Days|Subject), sleepstudy,#
+              cov.prior = gamma))
+library("blme")
+data("sleepstudy", package = "lme4")#
+(fm1 <- blmer(Reaction ~ Days + (0 + Days|Subject), sleepstudy,#
+              cov.prior = gamma))
+str(fm1)
+245.11/6300
+3.92*6300
+0.0392*6300
+0.038907*6300
+3067.12 + 1795 + 2475 + 435
+9923.42 - (3067.12 + 1795 + 2475 + 435)
+pol359 <- "In-class participation	10#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Daily quizzes	20#
+		   Analytical papers	15#
+		   Analytical papers	12.5#
+		   Analytical papers	12.5#
+		   Final exam	20"
+pol359
+pol359 <- "Assignment	Points#
+		   In-class participation	10#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Daily quizzes	20#
+		   Analytical papers	15#
+		   Analytical papers	12.5#
+		   Analytical papers	12.5#
+		   Final exam	20"#
+pol359 <- read.table(pol359, header = TRUE)
+pol359 <- "Assignment	Points#
+		   In-class participation	10#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Daily quizzes	20#
+		   Analytical papers	15#
+		   Analytical papers	12.5#
+		   Analytical papers	12.5#
+		   Final exam	20"#
+pol359 <- read.table(text = pol359, header = TRUE)
+pol359 <- "Assignment	Points#
+		   In-class participation	10#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Daily quizzes	20#
+		   Analytical papers	15#
+		   Analytical papers	12.5#
+		   Analytical papers	12.5#
+		   Final exam	20"#
+pol359 <- read.table(text = pol359, header = TRUE, row.names = FALSE)
+pol359 <- "Assignment	Points#
+		   In-class participation	10#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Daily quizzes	20#
+		   Analytical papers	15#
+		   Analytical papers	12.5#
+		   Analytical papers	12.5#
+		   Final exam	20"#
+pol359 <- read.table(text = pol359, header = TRUE, row.names = NULL)
+pol359
+str(pol359)
+pol359 <- read.table(header = TRUE, text = "In-class participation	10#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Daily quizzes	20#
+		   Analytical papers	15#
+		   Analytical papers	12.5#
+		   Analytical papers	12.5#
+		   Final exam	20")
+pol359
+str(pol359)
+pol359 <- read.table(header = TRUE, text = "Assignment	Points#
+		   In-class participation	10#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Daily quizzes	20#
+		   Analytical papers	15#
+		   Analytical papers	12.5#
+		   Analytical papers	12.5#
+		   Final exam	20")
+pol359 <- read.table(header = TRUE, text = "#
+		   Assignment	Points#
+		   In-class participation	10#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Daily quizzes	20#
+		   Analytical papers	15#
+		   Analytical papers	12.5#
+		   Analytical papers	12.5#
+		   Final exam	20")
+pol359 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Daily quizzes	20#
+		   Analytical papers	15#
+		   Analytical papers	12.5#
+		   Analytical papers	12.5#
+		   Final exam	20")
+pol359
+pol359 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Daily quizzes	20#
+		   Analytical papers	15#
+		   Analytical papers	12.5#
+		   Analytical papers	12.5#
+		   Final exam	20")#
+#
+pol359$Assignment <- paste(pol359$V1, pol359$V2, sep = " ")#
+pol359$Points <- pol359$V3
+str(pol359)
+library(ggplot2)#
+#
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar()
+pol359 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Online participation	2#
+		   Daily quizzes	20#
+		   Analytical papers	15#
+		   Analytical papers	12.5#
+		   Analytical papers	12.5#
+		   Final exam	20")#
+#
+pol359$Assignment <- paste(pol359$V1, pol359$V2, sep = " ")#
+pol359$Points <- pol359$V3#
+#
+library(ggplot2)#
+#
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "count")
+?geom_bar
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_histogram()
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity")
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity") + geom_errorbar(aes(x = "Online participation", y = c(2, 4, 6, 8), color = "white")
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity") + geom_errorbar(aes(x = "Online participation", y = c(2, 4, 6, 8)), color = "white")
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity") + geom_errorbar(x = "Online participation", y = c(2, 4, 6, 8), color = "white")
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity")
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity") + #
+		geom_errorbar(aes(y = bars1, ymin = bars1, ymax = bars1), color = "white")
+bars1 <- c(15, NA, NA, NA, 2)#
+bars2 <- c(27.5, NA, NA, NA, 4)#
+bars3 <- c(NA, NA, NA, NA, 6)#
+bars4 <- c(NA, NA, NA, NA, 8)#
+#
+library(ggplot2)#
+#
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity") + #
+		geom_errorbar(aes(y = bars1, ymin = bars1, ymax = bars1), color = "white")
+bars1 <- c(15, NA, NA, NA, 2)#
+bars2 <- c(27.5, NA, NA, NA, 4)#
+bars3 <- c(NA, NA, NA, NA, 6)#
+bars4 <- c(NA, NA, NA, NA, 8)
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity") + #
+		geom_errorbar(aes(y = bars1, ymin = bars1, ymax = bars1), color = "white")
+pol359 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Online participation	10#
+		   Daily quizzes	20#
+		   Analytical papers	40#
+		   Final exam	20")#
+#
+pol359$Assignment <- paste(pol359$V1, pol359$V2, sep = " ")#
+pol359$Points <- pol359$V3#
+#
+bars1 <- c(15, NA, NA, NA, 2)#
+bars2 <- c(27.5, NA, NA, NA, 4)#
+bars3 <- c(NA, NA, NA, NA, 6)#
+bars4 <- c(NA, NA, NA, NA, 8)#
+#
+library(ggplot2)#
+#
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity") + #
+		geom_errorbar(aes(y = bars1, ymin = bars1, ymax = bars1), color = "white")
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity")
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity") + #
+		geom_errorbar(aes(y = bars1, ymin = bars1, ymax = bars1), color = "white")
+?geom_errorbar
+pol359 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Online participation	10#
+		   Daily quizzes	20#
+		   Analytical papers	40#
+		   Final exam	20")#
+#
+pol359$Assignment <- paste(pol359$V1, pol359$V2, sep = " ")#
+pol359$Points <- pol359$V3#
+#
+pol359$bars1 <- c(15, NA, NA, NA, 2)#
+pol359$bars2 <- c(27.5, NA, NA, NA, 4)#
+pol359$bars3 <- c(NA, NA, NA, NA, 6)#
+pol359$bars4 <- c(NA, NA, NA, NA, 8)
+pol359
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity") + #
+		geom_segment(aes(xend = Assignment, y = bars1, yend = bars1), color = "white")
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white")
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white")
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		theme_minimal() + xlab("") + ylab("Percent of your grade")
+pol359 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Online participation	10#
+		   Daily quizzes	20#
+		   Analytical papers	40#
+		   Final exam	20")#
+#
+pol359$Assignment <- paste(pol359$V1, pol359$V2, sep = " ")#
+pol359$Points <- pol359$V3#
+#
+pol359$bars1 <- c(15, NA, NA, NA, 2)#
+pol359$bars2 <- c(27.5, NA, NA, NA, 4)#
+pol359$bars3 <- c(NA, NA, NA, NA, 6)#
+pol359$bars4 <- c(NA, NA, NA, NA, 8)#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		theme_pander() + xlab("") + ylab("Percent of your grade")
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", color = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 7.5, label = "Best paper", color = "white") +#
+		theme_pander() + xlab("") + ylab("Percent of your grade")
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 7.5, label = "Best paper", color = "white") +#
+		annotate(geom = "text", x = 1, y = 22.5, label = "Other paper 1", color = "white") +#
+		annotate(geom = "text", x = 1, y = 35, label = "Other paper 2", color = "white") +#
+		theme_pander() + xlab("") + ylab("Percent of your grade")
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 7.5, label = "Best paper", color = "white") +#
+		annotate(geom = "text", x = 1, y = 21.5, label = "Other paper 1", color = "white") +#
+		annotate(geom = "text", x = 1, y = 33, label = "Other paper 2", color = "white") +#
+		theme_pander() + xlab("") + ylab("Percent of your grade")
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 7.5, label = "Best paper", color = "white") +#
+		annotate(geom = "text", x = 1, y = 21.5, label = "Other paper 1", color = "white") +#
+		annotate(geom = "text", x = 1, y = 34, label = "Other paper 2", color = "white") +#
+		theme_pander() + xlab("") + ylab("Percent of your grade")
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 7.5, label = "Best paper", color = "white") +#
+		annotate(geom = "text", x = 1, y = 21.5, label = "Other paper 1", color = "white") +#
+		annotate(geom = "text", x = 1, y = 34, label = "Other paper 2", color = "white") +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip()
+pol359$bars1 <- c(15, NA, NA, NA, 2)#
+pol359$bars2 <- c(27.5, NA, NA, NA, 4)#
+pol359$bars3 <- c(NA, NA, NA, NA, 6)#
+pol359$bars4 <- c(NA, NA, NA, NA, 8)#
+#
+pol359$bars1a <- c(25, NA, NA, NA, 2)#
+pol359$bars2a <- c(32.5, NA, NA, NA, 4)#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+p <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 7.5, label = "Best paper", color = "white") +#
+		annotate(geom = "text", x = 1, y = 21.5, label = "Other paper 1", color = "white") +#
+		annotate(geom = "text", x = 1, y = 34, label = "Other paper 2", color = "white") +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip()#
+p2 <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2a, yend = bars2a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 12.5, label = "Revised paper", color = "white") +#
+		annotate(geom = "text", x = 1, y = 28.25, label = "Other paper 1", color = "white") +#
+		annotate(geom = "text", x = 1, y = 36, label = "Other paper 2", color = "white") +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip()
+p <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 7.5, label = "Best paper", color = "white") +#
+		annotate(geom = "text", x = 1, y = 21.5, label = "Other paper 1", color = "white") +#
+		annotate(geom = "text", x = 1, y = 34, label = "Other paper 2", color = "white") +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip()#
+p2 <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2a, yend = bars2a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 12.5, label = "Revised paper", color = "white") +#
+		annotate(geom = "text", x = 1, y = 28.25, label = "Other paper 1", color = "white") +#
+		annotate(geom = "text", x = 1, y = 36, label = "Other paper 2", color = "white") +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip()#
+library(gridExtra)#
+#
+grid.arrange(p, p2, ncol = 2)
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2a, yend = bars2a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 12.5, label = "Revised paper", color = "white", size = 5) +#
+		annotate(geom = "text", x = 1, y = 28.25, label = "Other paper 1", color = "white") +#
+		annotate(geom = "text", x = 1, y = 36, label = "Other paper 2", color = "white") +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip()
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2a, yend = bars2a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 12.5, label = "Revised paper", color = "white", size = 3) +#
+		annotate(geom = "text", x = 1, y = 28.25, label = "Other paper 1", color = "white") +#
+		annotate(geom = "text", x = 1, y = 36, label = "Other paper 2", color = "white") +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip()
+ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2a, yend = bars2a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 12.5, label = "Revised paper", color = "white", size = 4) +#
+		annotate(geom = "text", x = 1, y = 28.25, label = "Other paper 1", color = "white") +#
+		annotate(geom = "text", x = 1, y = 36, label = "Other paper 2", color = "white") +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip()
+p <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 7.5, label = "Best paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 21.5, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 34, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Default model")#
+p2 <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2a, yend = bars2a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 12.5, label = "Revised paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 28.25, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 36, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Using paper revision")#
+library(gridExtra)#
+#
+grid.arrange(p, p2, ncol = 2)
+p <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 7.5, label = "Best paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 21.5, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 34, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Default model")#
+p2 <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2a, yend = bars2a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 12.5, label = "Revised paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 28.25, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 36, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Using paper revision")#
+library(gridExtra)#
+#
+grid.arrange(p, p2, ncol = 1)
+pdf("/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/POL 359/Fall 2017/Syllabus/karreth359_grades.pdf", width = 10, height = 4)#
+grid.arrange(p, p2, ncol = 1)#
+dev.off()
+pol359 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Online participation	10#
+		   Pre-class quizzes	20#
+		   Analytical papers	40#
+		   Final exam	20")#
+#
+pol359$Assignment <- paste(pol359$V1, pol359$V2, sep = " ")#
+pol359$Points <- pol359$V3#
+#
+pol359$bars1 <- c(15, NA, NA, NA, 2)#
+pol359$bars2 <- c(27.5, NA, NA, NA, 4)#
+pol359$bars3 <- c(NA, NA, NA, NA, 6)#
+pol359$bars4 <- c(NA, NA, NA, NA, 8)#
+#
+pol359$bars1a <- c(25, NA, NA, NA, 2)#
+pol359$bars2a <- c(32.5, NA, NA, NA, 4)#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+p <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 7.5, label = "Best paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 21.5, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 34, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Default model")#
+p2 <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2a, yend = bars2a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 12.5, label = "Revised paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 28.25, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 36, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Using paper revision")#
+library(gridExtra)#
+#
+pdf("/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/POL 359/Fall 2017/Syllabus/karreth359_grades.pdf", width = 10, height = 4)#
+grid.arrange(p, p2, ncol = 1)#
+dev.off()
+pol359 <- read.table(header = FALSE, text = "#
+		   1. In-class participation	10#
+		   2. Online participation	10#
+		   3. Pre-class quizzes	20#
+		   4. Analytical papers	40#
+		   5. Final exam	20")#
+#
+pol359$Assignment <- paste(pol359$V1, pol359$V2, sep = " ")#
+pol359$Points <- pol359$V3#
+#
+pol359$bars1 <- c(15, NA, NA, NA, 2)#
+pol359$bars2 <- c(27.5, NA, NA, NA, 4)#
+pol359$bars3 <- c(NA, NA, NA, NA, 6)#
+pol359$bars4 <- c(NA, NA, NA, NA, 8)#
+#
+pol359$bars1a <- c(25, NA, NA, NA, 2)#
+pol359$bars2a <- c(32.5, NA, NA, NA, 4)#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+p <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 7.5, label = "Best paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 21.5, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 34, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Default model")#
+p2 <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2a, yend = bars2a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 12.5, label = "Revised paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 28.25, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 36, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Using paper revision")#
+library(gridExtra)#
+#
+pdf("/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/POL 359/Fall 2017/Syllabus/karreth359_grades.pdf", width = 10, height = 4)#
+grid.arrange(p, p2, ncol = 1)#
+dev.off()
+str(pol359)
+pol359 <- read.table(header = FALSE, text = "#
+		   1. In-class participation	10#
+		   2. Online participation	10#
+		   3. Pre-class quizzes	20#
+		   4. Analytical papers	40#
+		   5. Final exam	20")#
+#
+pol359$Assignment <- paste(pol359$V1, pol359$V2, sep = " ")#
+pol359$Points <- pol359$V3#
+#
+pol359$bars1 <- c(15, NA, NA, NA, 2)#
+pol359$bars2 <- c(27.5, NA, NA, NA, 4)#
+pol359$bars3 <- c(NA, NA, NA, NA, 6)#
+pol359$bars4 <- c(NA, NA, NA, NA, 8)#
+#
+pol359$bars1a <- c(25, NA, NA, NA, 2)#
+pol359$bars2a <- c(32.5, NA, NA, NA, 4)#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+p <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 7.5, label = "Best paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 21.5, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 34, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Default model")#
+p2 <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2a, yend = bars2a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 12.5, label = "Revised paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 28.25, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 36, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Using paper revision")#
+library(gridExtra)#
+#
+pdf("/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/POL 359/Fall 2017/Syllabus/karreth359_grades.pdf", width = 10, height = 4)#
+grid.arrange(p, p2, ncol = 1)#
+dev.off()
+pol359 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Online participation	10#
+		   Pre-class quizzes	20#
+		   Analytical papers	40#
+		   Final exam	20")#
+#
+pol359$Assignment <- paste(pol359$V1, pol359$V2, sep = " ")#
+pol359$Points <- pol359$V3#
+#
+pol359$bars1 <- c(15, NA, NA, NA, 2)#
+pol359$bars2 <- c(27.5, NA, NA, NA, 4)#
+pol359$bars3 <- c(NA, NA, NA, NA, 6)#
+pol359$bars4 <- c(NA, NA, NA, NA, 8)#
+#
+pol359$bars1a <- c(25, NA, NA, NA, 2)#
+pol359$bars2a <- c(32.5, NA, NA, NA, 4)#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+p <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 7.5, label = "Best paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 21.5, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 34, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Default model")#
+p2 <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2a, yend = bars2a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 12.5, label = "Revised paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 28.25, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 36, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Using paper revision")#
+library(gridExtra)#
+#
+pdf("/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/POL 359/Fall 2017/Syllabus/karreth359_grades.pdf", width = 10, height = 4)#
+grid.arrange(p, p2, ncol = 1)#
+dev.off()
+pol359 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Online participation	10#
+		   Pre-class quizzes	20#
+		   Analytical papers	40#
+		   Final exam	20")#
+#
+pol359$Assignment <- paste(pol359$V1, pol359$V2, sep = " ")#
+pol359$Points <- pol359$V3#
+#
+pol359$bars1 <- c(15, NA, NA, 2, NA)#
+pol359$bars2 <- c(27.5, NA, NA, 4, NA)#
+pol359$bars3 <- c(NA, NA, NA, 6, NA)#
+pol359$bars4 <- c(NA, NA, NA, 8, NA)#
+#
+pol359$bars1a <- c(25, NA, NA, 2, NA)#
+pol359$bars2a <- c(32.5, NA, NA, 4, NA)#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+p <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 7.5, label = "Best paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 21.5, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 34, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Default model")#
+p2 <- ggplot(data = pol359, aes(x = Assignment, y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2a, yend = bars2a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 12.5, label = "Revised paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 28.25, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 36, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Using paper revision")#
+library(gridExtra)#
+#
+pdf("/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/POL 359/Fall 2017/Syllabus/karreth359_grades.pdf", width = 10, height = 4)#
+grid.arrange(p, p2, ncol = 1)#
+dev.off()
+ggplot(data = pol359, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 1, y = 7.5, label = "Best paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 21.5, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 1, y = 34, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Default model")
+pol359 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Online participation	10#
+		   Pre-class quizzes	20#
+		   Analytical papers	40#
+		   Final exam	20")#
+#
+pol359$Assignment <- paste(pol359$V1, pol359$V2, sep = " ")#
+pol359$Points <- pol359$V3#
+#
+pol359$bars1 <- c(NA, 2, NA, NA, 15)#
+pol359$bars2 <- c(NA, 4, NA, NA, 27.5)#
+pol359$bars3 <- c(NA, 6, NA, NA, NA)#
+pol359$bars4 <- c(NA, 8, NA, NA, NA)#
+#
+pol359$bars1a <- c(NA, 2, NA, NA, 25)#
+pol359$bars2a <- c(NA, 4, NA, NA, 32.5)#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+p <- ggplot(data = pol359, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 7.5, label = "Best paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 21.5, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 34, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Default model")
+p
+pol359 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Online participation	10#
+		   Pre-class quizzes	20#
+		   Analytical papers	40#
+		   Final exam	20")#
+#
+pol359$Assignment <- paste(pol359$V1, pol359$V2, sep = " ")#
+pol359$Points <- pol359$V3#
+#
+pol359$bars1 <- c(NA, 2, NA, NA, 15)#
+pol359$bars2 <- c(NA, 4, NA, NA, 27.5)#
+pol359$bars3 <- c(NA, 6, NA, NA, NA)#
+pol359$bars4 <- c(NA, 8, NA, NA, NA)#
+#
+pol359$bars1a <- c(NA, 2, NA, NA, 25)#
+pol359$bars2a <- c(NA, 4, NA, NA, 32.5)#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+p <- ggplot(data = pol359, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 7.5, label = "Best paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 21.5, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 34, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Default model")#
+p2 <- ggplot(data = pol359, aes(x = reorder(Assignment), y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2a, yend = bars2a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 12.5, label = "Revised paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 28.25, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 36, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Using paper revision")#
+library(gridExtra)#
+#
+pdf("/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/POL 359/Fall 2017/Syllabus/karreth359_grades.pdf", width = 10, height = 4)#
+grid.arrange(p, p2, ncol = 1)#
+dev.off()
+ggplot(data = pol359, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 7.5, label = "Best paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 21.5, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 34, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Default model")
+ggplot(data = pol359, aes(x = reorder(Assignment), y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2a, yend = bars2a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 12.5, label = "Revised paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 28.25, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 36, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Using paper revision")
+ggplot(data = pol359, aes(x = reorder(Assignment), y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white")
+pol359 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Online participation	10#
+		   Pre-class quizzes	20#
+		   Analytical papers	40#
+		   Final exam	20")#
+#
+pol359$Assignment <- paste(pol359$V1, pol359$V2, sep = " ")#
+pol359$Points <- pol359$V3#
+#
+pol359$bars1 <- c(NA, 2, NA, NA, 15)#
+pol359$bars2 <- c(NA, 4, NA, NA, 27.5)#
+pol359$bars3 <- c(NA, 6, NA, NA, NA)#
+pol359$bars4 <- c(NA, 8, NA, NA, NA)#
+#
+pol359$bars1a <- c(NA, 2, NA, NA, 25)#
+pol359$bars2a <- c(NA, 4, NA, NA, 32.5)#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+p <- ggplot(data = pol359, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 7.5, label = "Best paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 21.5, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 34, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Default model")#
+p2 <- ggplot(data = pol359, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2a, yend = bars2a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 12.5, label = "Revised paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 28.25, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 36, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Using paper revision")#
+library(gridExtra)#
+#
+pdf("/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/POL 359/Fall 2017/Syllabus/karreth359_grades.pdf", width = 10, height = 4)#
+grid.arrange(p, p2, ncol = 1)#
+dev.off()
+pol359 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Online participation	10#
+		   Pre-class quizzes	20#
+		   Analytical papers	40#
+		   Final exam	20")#
+#
+pol359$Assignment <- paste(pol359$V1, pol359$V2, sep = " ")#
+pol359$Points <- pol359$V3#
+#
+pol359$bars1 <- c(NA, 2, NA, NA, 15)#
+pol359$bars2 <- c(NA, 4, NA, NA, 27.5)#
+pol359$bars3 <- c(NA, 6, NA, NA, NA)#
+pol359$bars4 <- c(NA, 8, NA, NA, NA)#
+#
+pol359$bars1a <- c(NA, 2, NA, NA, 25)#
+pol359$bars2a <- c(NA, 4, NA, NA, 32.5)#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+p <- ggplot(data = pol359, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 7.5, label = "Best paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 21.5, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 34, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Default grading scheme")#
+p2 <- ggplot(data = pol359, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2a, yend = bars2a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 12.5, label = "Revised paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 28.25, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 36, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Grading scheme using paper revision")#
+library(gridExtra)#
+#
+pdf("/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/POL 359/Fall 2017/Syllabus/karreth359_grades.pdf", width = 10, height = 4)#
+grid.arrange(p, p2, ncol = 1)#
+dev.off()
+pol399 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Pre-class quizzes	20#
+		   Group presentation	10#
+		   Oral exam	20#
+		   Research project	40")#
+#
+pol399$Assignment <- paste(pol399$V1, pol399$V2, sep = " ")#
+pol399$Points <- pol399$V3#
+#
+pol399$bars1 <- c(NA, NA, NA, NA, 10)#
+pol399$bars2 <- c(NA, NA, NA, NA, 20)#
+pol399$bars3 <- c(NA, NA, NA, NA, 30)#
+pol399$bars4 <- c(NA, NA, NA, NA, 40)#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+p <- ggplot(data = pol399, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 5, label = "Research questions", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 15, label = "Literature review", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 25, label = "Project outline", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 35, label = "First draft", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 65, label = "Final paper", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip()
+p
+24/40
+ggplot(data = pol399, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 2, label = "Research questions", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 6, label = "Literature review", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 10, label = "Project outline", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 14, label = "First draft", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 28, label = "Final paper", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip()
+pol399 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Pre-class quizzes	20#
+		   Group presentation	10#
+		   Oral exam	20#
+		   Research project	40")#
+#
+pol399$Assignment <- paste(pol399$V1, pol399$V2, sep = " ")#
+pol399$Points <- pol399$V3#
+#
+pol399$bars1 <- c(NA, NA, NA, NA, 4)#
+pol399$bars2 <- c(NA, NA, NA, NA, 8)#
+pol399$bars3 <- c(NA, NA, NA, NA, 12)#
+pol399$bars4 <- c(NA, NA, NA, NA, 16)#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+p <- ggplot(data = pol399, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 2, label = "Research questions", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 6, label = "Literature review", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 10, label = "Project outline", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 14, label = "First draft", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 28, label = "Final paper", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip()
+p
+ggplot(data = pol399, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 2, label = "Research\nquestions", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 6, label = "Literature\nreview", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 10, label = "Project\noutline", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 14, label = "First\ndraft", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 28, label = "Final paper", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip()
+pol399 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Pre-class quizzes	20#
+		   Group presentation	10#
+		   Oral exam	20#
+		   Research project	40")#
+#
+pol399$Assignment <- paste(pol399$V1, pol399$V2, sep = " ")#
+pol399$Points <- pol399$V3#
+#
+pol399$bars1 <- c(NA, NA, NA, NA, 4)#
+pol399$bars2 <- c(NA, NA, NA, NA, 8)#
+pol399$bars3 <- c(NA, NA, NA, NA, 12)#
+pol399$bars4 <- c(NA, NA, NA, NA, 16)#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+p <- ggplot(data = pol399, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 2, label = "Research\nquestions", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 6, label = "Literature\nreview", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 10, label = "Project\noutline", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 14, label = "First\ndraft", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 28, label = "Final paper", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() #
+ggsave(p, "/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/POL 399/Fall 2017/Syllabus/karreth399_grades.pdf", width = 10, height = 2)
+ggsave(p, file = "/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/POL 399/Fall 2017/Syllabus/karreth399_grades.pdf", width = 10, height = 2)
+ggsave(p, file = "/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/POL 399 (Terrorism)/Syllabus/karreth399_grades.pdf", width = 10, height = 2)
+ggsave(plot = p, filename = "/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/POL 399 (Terrorism)/Syllabus/karreth399_grades.pdf", width = 10, height = 2)
+p <- ggplot(data = pol399, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(stat = "identity", fill = "black") + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 2, label = "Research\nquestions", color = "white", size = 3) +#
+		annotate(geom = "text", x = 5, y = 6, label = "Literature\nreview", color = "white", size = 3) +#
+		annotate(geom = "text", x = 5, y = 10, label = "Project\noutline", color = "white", size = 3) +#
+		annotate(geom = "text", x = 5, y = 14, label = "First\ndraft", color = "white", size = 3) +#
+		annotate(geom = "text", x = 5, y = 28, label = "Final paper", color = "white", size = 3) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() #
+ggsave(plot = p, filename = "/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/POL 399 (Terrorism)/Syllabus/karreth399_grades.pdf", width = 10, height = 2)
+ggsave(plot = p, filename = "/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/POL 399 (Terrorism)/Syllabus/karreth399_grades.pdf", width = 10, height = 2.5)
+pol359 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Online participation	10#
+		   Pre-class quizzes	20#
+		   Analytical papers	40#
+		   Final exam	20")#
+#
+pol359$Assignment <- paste(pol359$V1, pol359$V2, sep = " ")#
+pol359$Points <- pol359$V3#
+#
+pol359$bars1 <- c(NA, 2, NA, NA, 15)#
+pol359$bars2 <- c(NA, 4, NA, NA, 27.5)#
+pol359$bars3 <- c(NA, 6, NA, NA, NA)#
+pol359$bars4 <- c(NA, 8, NA, NA, NA)#
+#
+pol359$bars1a <- c(NA, 2, NA, NA, 25)#
+pol359$bars2a <- c(NA, 4, NA, NA, 32.5)#
+#
+pol359$req <- c(0, 0, 0, 1, 1)#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+p <- ggplot(data = pol359, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(aes(fill = req), stat = "identity") + #
+		scale_fill_manual(values = c("black", "red")) + #
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 7.5, label = "Best paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 21.5, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 34, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Default grading scheme")
+p
+ggplot(data = pol359, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(aes(fill = req), stat = "identity") + #
+		scale_fill_manual(values = c("black", "red")) + guides(fill = FALSE) +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 7.5, label = "Best paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 21.5, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 34, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Default grading scheme")
+pol359$req <- c("no", "no", "no", "yes", "yes")
+ggplot(data = pol359, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(aes(fill = req), stat = "identity") + #
+		scale_fill_manual(values = c("black", "red")) + guides(fill = FALSE) +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 7.5, label = "Best paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 21.5, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 34, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Default grading scheme")
+pol359 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Online participation	10#
+		   Pre-class quizzes	20#
+		   Analytical papers	40#
+		   Final exam	20")#
+#
+pol359$Assignment <- paste(pol359$V1, pol359$V2, sep = " ")#
+pol359$Points <- pol359$V3#
+#
+pol359$bars1 <- c(NA, 2, NA, NA, 15)#
+pol359$bars2 <- c(NA, 4, NA, NA, 27.5)#
+pol359$bars3 <- c(NA, 6, NA, NA, NA)#
+pol359$bars4 <- c(NA, 8, NA, NA, NA)#
+#
+pol359$bars1a <- c(NA, 2, NA, NA, 25)#
+pol359$bars2a <- c(NA, 4, NA, NA, 32.5)#
+#
+pol359$req <- c("no", "no", "no", "yes", "yes")#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+p <- ggplot(data = pol359, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(aes(fill = req), stat = "identity") + #
+		scale_fill_manual(values = c("black", "red")) + guides(fill = FALSE) +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 7.5, label = "Best paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 21.5, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 34, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Default grading scheme")#
+p2 <- ggplot(data = pol359, aes(x = reorder(Assignment, Points), y = Points)) + geom_bar(aes(fill = req), stat = "identity") + #
+		scale_fill_manual(values = c("black", "red")) + guides(fill = FALSE) +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1a, yend = bars1a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2a, yend = bars2a), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 12.5, label = "Revised paper", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 28.25, label = "Other paper 1", color = "white", size = 3.5) +#
+		annotate(geom = "text", x = 5, y = 36, label = "Other paper 2", color = "white", size = 3.5) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() + ggtitle("Grading scheme using paper revision")#
+library(gridExtra)#
+#
+pdf("/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/POL 359/Fall 2017/Syllabus/karreth359_grades.pdf", width = 10, height = 4)#
+grid.arrange(p, p2, ncol = 1)#
+dev.off()
+pol399 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Pre-class quizzes	20#
+		   Group presentation	10#
+		   Oral exam	20#
+		   Research project	40")#
+#
+pol399$Assignment <- paste(pol399$V1, pol399$V2, sep = " ")#
+pol399$Points <- pol399$V3#
+#
+pol399$bars1 <- c(NA, NA, NA, NA, 4)#
+pol399$bars2 <- c(NA, NA, NA, NA, 8)#
+pol399$bars3 <- c(NA, NA, NA, NA, 12)#
+pol399$bars4 <- c(NA, NA, NA, NA, 16)#
+#
+pol399$req <- c("no", "no", "no", "yes", "yes")#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+p <- ggplot(data = pol399, aes(x = reorder(Assignment, Points), y = Points))  + geom_bar(aes(fill = req), stat = "identity") + #
+		scale_fill_manual(values = c("black", "red")) + guides(fill = FALSE) +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 2, label = "Research\nquestions", color = "white", size = 3) +#
+		annotate(geom = "text", x = 5, y = 6, label = "Literature\nreview", color = "white", size = 3) +#
+		annotate(geom = "text", x = 5, y = 10, label = "Project\noutline", color = "white", size = 3) +#
+		annotate(geom = "text", x = 5, y = 14, label = "First\ndraft", color = "white", size = 3) +#
+		annotate(geom = "text", x = 5, y = 28, label = "Final paper", color = "white", size = 3) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip()
+p
+pol399 <- read.table(header = FALSE, text = "#
+		   In-class participation	10#
+		   Pre-class quizzes	20#
+		   Group presentation	10#
+		   Oral exam	20#
+		   Research project	40")#
+#
+pol399$Assignment <- paste(pol399$V1, pol399$V2, sep = " ")#
+pol399$Points <- pol399$V3#
+#
+pol399$bars1 <- c(NA, NA, NA, NA, 4)#
+pol399$bars2 <- c(NA, NA, NA, NA, 8)#
+pol399$bars3 <- c(NA, NA, NA, NA, 12)#
+pol399$bars4 <- c(NA, NA, NA, NA, 16)#
+#
+pol399$req <- c("no", "no", "no", "yes", "yes")#
+#
+library(ggplot2)#
+library(ggthemes)#
+#
+p <- ggplot(data = pol399, aes(x = reorder(Assignment, Points), y = Points))  + geom_bar(aes(fill = req), stat = "identity") + #
+		scale_fill_manual(values = c("black", "red")) + guides(fill = FALSE) +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars1, yend = bars1), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars2, yend = bars2), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars3, yend = bars3), color = "white") +#
+		geom_segment(aes(x = seq(0.5, 4.5, by = 1), xend = seq(1.5, 5.5, by = 1), y = bars4, yend = bars4), color = "white") +#
+		annotate(geom = "text", x = 5, y = 2, label = "Research\nquestions", color = "white", size = 3) +#
+		annotate(geom = "text", x = 5, y = 6, label = "Literature\nreview", color = "white", size = 3) +#
+		annotate(geom = "text", x = 5, y = 10, label = "Project\noutline", color = "white", size = 3) +#
+		annotate(geom = "text", x = 5, y = 14, label = "First\ndraft", color = "white", size = 3) +#
+		annotate(geom = "text", x = 5, y = 28, label = "Final paper", color = "white", size = 3) +#
+		theme_pander() + xlab("") + ylab("Percent of your grade") + coord_flip() #
+ggsave(plot = p, filename = "/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/POL 399 (Terrorism)/Syllabus/karreth399_grades.pdf", width = 10, height = 2.5)
+library(tabulizer)
+install.packages('tabulizer')
+exp(0.89)
+log(0.89)
+9992-216
+8120-5177
+8120-5177-1795
+library("googlesheets")#
+my_sheets <- gs_ls()#
+fb <- gs_title("Fahrtenbuch für Felix the Fit")#
+fb <- gs_read(fb, ws = "Form Responses 1")#
+d <- as.data.frame(fb)#
+d$Date2 <- gsub(" .*$", "", d$Timestamp)#
+d$Date2 <- ifelse(is.na(d$Date2), d$Date, d$Date2)#
+d$day <- as.Date(d$Date2, format = "%m/%d/%Y")#
+#
+d$philadelphia <- ifelse(d$day > "2014-08-04", 1, 0)#
+d$MPG2 <- ifelse(d$MPG > 50, NA, d$MPG)#
+#
+library(ggplot2)#
+source("~/R/Source/JKmisc/theme_jk.R")#
+ggplot(data = d, aes(x = day, y = MPG2)) + geom_point(size = 0.5) + geom_smooth(aes(group = factor(philadelphia)), size = 0.5, method = "loess", span = 0.5) + xlab("") + ylab("Miles per gallon") + theme_jk()
+install.packages("googlesheets")
+library("googlesheets")#
+my_sheets <- gs_ls()#
+fb <- gs_title("Fahrtenbuch für Felix the Fit")#
+fb <- gs_read(fb, ws = "Form Responses 1")#
+d <- as.data.frame(fb)#
+d$Date2 <- gsub(" .*$", "", d$Timestamp)#
+d$Date2 <- ifelse(is.na(d$Date2), d$Date, d$Date2)#
+d$day <- as.Date(d$Date2, format = "%m/%d/%Y")#
+#
+d$philadelphia <- ifelse(d$day > "2014-08-04", 1, 0)#
+d$MPG2 <- ifelse(d$MPG > 50, NA, d$MPG)#
+#
+library(ggplot2)#
+source("~/R/Source/JKmisc/theme_jk.R")#
+ggplot(data = d, aes(x = day, y = MPG2)) + geom_point(size = 0.5) + geom_smooth(aes(group = factor(philadelphia)), size = 0.5, method = "loess", span = 0.5) + xlab("") + ylab("Miles per gallon") + theme_jk()
+ggplot(data = d, aes(x = day, y = MPG2)) + geom_point(size = 0.5) + geom_smooth(aes(group = factor(philadelphia)), size = 0.5, method = "loess", span = 0.5) + xlab("") + ylab("Miles per gallon") + theme_jk()
+library(Amelia)
+library(Amelia)#
+data(freetrade)#
+summary(freetrade)
+summary(lm(tariff ~ polity + pop + gdp.pc + year + country, data = freetrade))
+a.out <- amelia(freetrade, m = 5, ts = "year", cs = "country")
+tscsPlot(a.out, cs = "Malaysia", main = "No logical bounds", var = "tariff", ylim = c(-10,60))max.resample = 1000)
+tscsPlot(a.out, cs = "Malaysia", main = "No logical bounds", var = "tariff", ylim = c(-10,60)), max.resample = 1000)
+tscsPlot(a.out, cs = "Malaysia", main = "No logical bounds", var = "tariff", ylim = c(-10,60))
+tscsPlot(a.out.bds, cs = "Malaysia", main = "Bounded between 30 and 40", var = "tariff", ylim = c(-10,60))
+a.out.bds <- amelia(freetrade, ts = "year", cs = "country", bounds = bds,
+a.out.bds <- amelia(freetrade, ts = "year", cs = "country", bounds = bds, max.resample = 1000)
+bds <- matrix(c(3, 30, 40), nrow = 1, ncol = 3)#
+a.out.bds <- amelia(freetrade, ts = "year", cs = "country", bounds = bds, max.resample = 1000)
+tscsPlot(a.out, cs = "Malaysia", main = "No logical bounds", var = "tariff", ylim = c(-10,60))
+tscsPlot(a.out.bds, cs = "Malaysia", main = "Bounded between 30 and 40", var = "tariff", ylim = c(-10,60))
+summary(freetrade)
+intresmi.bds <- matrix(c(7, 0, Inf), nrow = 1, ncol = 3)
+tariffs.bds
+tariffs.bds <- matrix(c(3, 30, 40), nrow = 1, ncol = 3)
+tariffs.bds
+intresmi.bds
+a.out.tariffs.intresmi.bds <- amelia(freetrade, ts = "year", cs = "country", bounds = rbind(tariffs.bds, intresmi.bds), max.resample = 1000)
+par(mfrow = c(2, 2))#
+tscsPlot(a.out, cs = "Malaysia", main = "No logical bounds", var = "tariff", ylim = c(-10,60))#
+tscsPlot(a.out.bds, cs = "Malaysia", main = "Bounded between 30 and 40", var = "tariff", ylim = c(-10,60))#
+tscsPlot(a.out, cs = "Malaysia", main = "No logical bounds", var = "intresmi", ylim = c(-10,20))#
+tscsPlot(a.out.bds, cs = "Malaysia", main = "Bounded between 0 and Inf", var = "intresmi", ylim = c(-10,20))
+tariffs.bds <- matrix(c(3, 30, 40), nrow = 1, ncol = 3)#
+a.out.tariffs.bds <- amelia(freetrade, ts = "year", cs = "country", bounds = bds, max.resample = 1000)#
+#
+par(mfrow = c(2, 1))#
+tscsPlot(a.out, cs = "Malaysia", main = "No logical bounds", var = "tariff", ylim = c(-10,60))#
+tscsPlot(a.out.tariffs.bds, cs = "Malaysia", main = "Bounded between 30 and 40", var = "tariff", ylim = c(-10,60))#
+#
+intresmi.bds <- matrix(c(7, 5, Inf), nrow = 1, ncol = 3)#
+a.out.tariffs.intresmi.bds <- amelia(freetrade, ts = "year", cs = "country", bounds = rbind(tariffs.bds, intresmi.bds), max.resample = 1000)#
+#
+par(mfrow = c(2, 2))#
+tscsPlot(a.out, cs = "Malaysia", main = "No logical bounds", var = "tariff", ylim = c(-10,60))#
+tscsPlot(a.out.bds, cs = "Malaysia", main = "Bounded between 30 and 40", var = "tariff", ylim = c(-10,60))#
+tscsPlot(a.out, cs = "Malaysia", main = "No logical bounds", var = "intresmi", ylim = c(-10,20))#
+tscsPlot(a.out.bds, cs = "Malaysia", main = "Bounded between 5 and Inf", var = "intresmi", ylim = c(-10,20))
+summary(a.out.tariffs.intresmi.bds)
+freetrade[freetrade$country == "Thailand", c("year","country","tariff", "intresmi")]
+intresmi.bds <- matrix(c(7, 10, Inf), nrow = 1, ncol = 3)#
+a.out.tariffs.intresmi.bds <- amelia(freetrade, ts = "year", cs = "country", bounds = rbind(tariffs.bds, intresmi.bds), max.resample = 1000)
+par(mfrow = c(2, 2))#
+tscsPlot(a.out, cs = "Thailand", main = "No logical bounds", var = "tariff", ylim = c(-10,60))#
+tscsPlot(a.out.bds, cs = "Thailand", main = "Bounded between 30 and 40", var = "tariff", ylim = c(-10,60))#
+tscsPlot(a.out, cs = "Thailand", main = "No logical bounds", var = "intresmi", ylim = c(-10,20))#
+tscsPlot(a.out.bds, cs = "Thailand", main = "Bounded between 5 and Inf", var = "intresmi", ylim = c(-10,20))
+par(mfrow = c(2, 2))#
+tscsPlot(a.out, cs = "Thailand", main = "No logical bounds", var = "tariff", ylim = c(-10,60))#
+tscsPlot(a.out.tariffs.bds, cs = "Thailand", main = "Bounded between 30 and 40", var = "tariff", ylim = c(-10,60))#
+tscsPlot(a.out, cs = "Thailand", main = "No logical bounds", var = "intresmi", ylim = c(-10,20))#
+tscsPlot(a.out.tariffs.intresmi.bds, cs = "Thailand", main = "Bounded between 5 and Inf", var = "intresmi", ylim = c(-10,20))
+?matrix
+bds <- matrix(c(13, 0, Inf#
+				14, 0, Inf,#
+				15, 0, Inf), #
+			  nrow = 3, ncol = 3, byrow = FALSE)#
+#
+bds
+bds <- matrix(c(13, 0, Inf,#
+				14, 0, Inf,#
+				15, 0, Inf), #
+			  nrow = 3, ncol = 3, byrow = FALSE)#
+#
+bds
+bds <- matrix(c(13, 0, Inf,#
+				14, 0, Inf,#
+				15, 0, Inf), #
+			  nrow = 3, ncol = 3, byrow = TRUE)#
+#
+bds
+intresmi.bds
+rbind(tariff.bds)
+rbind(tariffs.bds)
+rbind(tariffs.bds, intresmi.bds)
+bds <- matrix(c(13, 0, Inf,#
+				14, 0, Inf,#
+				15, 0, Inf), #
+			  nrow = 3, ncol = 3, byrow = TRUE)#
+#
+bds
+d <- rio::import("/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/Project TIER/Albany workshop/Replication Documentation for Midlife Crisis Paper Rmd version/Analysis-Data/country-analysis.dta")
+d
+install.packages("hee")
+install.packages("here")
+library(here)
+setwd("/Users/johanneskarreth/Documents/Dropbox/Uni/Teaching/Project TIER/Albany workshop/Replication Documentation for Midlife Crisis Paper Rmd version/Analysis-Data")
+here()
+?here
+here("one")
+here("../one")
+?here
+here("../one")
+here("..")

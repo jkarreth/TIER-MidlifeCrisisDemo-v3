@@ -1,0 +1,175 @@
+---
+title: "Data Appendix"
+author: "Dägg and Janné, *Money, Happiness and the Midlife Crisis*"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    code_folding: hide
+    self_contained: yes
+  pdf_document: default
+editor_options:
+  chunk_output_type: console
+---
+
+```{r fileinfo, echo = FALSE}
+### 
+# Created by Johannes Karreth
+# Last updated:  2018-05-24
+# Written for R 3.5.0, Mac OS X 
+### 
+```
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+# command_dir <- dirname(rstudioapi::getSourceEditorContext()$path)
+# setwd(command_dir)
+library("knitr")
+library("tidyverse")
+library("summarytools")
+```
+
+```{r dataprep, eval = FALSE, echo = FALSE}
+# Note: These command files create the data used in this paper.
+# eval is set to FALSE because these scripts need not be run each 
+# time the paper is compiled.
+source("../Command-Files/1-import-wdi.R")
+source("../Command-Files/2-import-pew.R")
+source("../Command-Files/3-processing.R")
+```
+
+```{r loaddata, echo = FALSE}
+dc <- readRDS("../Analysis-Data/country-analysis.rds")
+di <- readRDS("../Analysis-Data/individual-analysis.rds")
+```
+
+# Individual-level analysis data set: `individual-analysis.rds`
+
+The individual-level data set contains observations representing `r nrow(di)` individuals from `r length(unique(di$CountryName))` countries. The distribution of observations across countries is as follows:
+
+```{r freqtableCountryName, results = "asis"}
+# table(di$CountryName)
+freq(di$CountryName, report.nas = FALSE, style = "rmarkdown", omit.headings = TRUE)
+```
+
+The individual-level data set contains two individual-level variables: `SATIS` and `AGE`. Definitions, summary statistics and illustrations of the distributions of those two variables are shown below.
+
+\clearpage
+
+### Variable name: `SATIS`
+
+- Source: Pew data set
+- Values: Integers from 0 through 10
+- Coding: Respondent's assessment of her/his overall satisfaction with life on a scale of 0 (least satisfied) to 10 (most satisfied)
+
+```{r freqtableSatis, results = "asis"}
+# table(di$satis)
+freq(di$satis, report.nas = FALSE, style = "rmarkdown", omit.headings = TRUE)
+```
+
+```{r barSatis}
+ggplot(data = di, aes(x = factor(satis))) + 
+ geom_bar(aes(y = (..count..)/sum(..count..))) +
+ scale_y_continuous() +
+ xlab("Satisfaction (self-reported)") + 
+ ylab("Share of respondents")
+```
+
+\clearpage
+
+### Variable name: `AGE`
+
+- Source: Pew data set
+- Values: Positive integers
+- Coding: Respondent's age in years at last birthday
+
+
+```{r descrAge, results = "asis"}
+# summary(di$age)
+descr(di$age, stats = c("mean", "sd", "min", "Q1", "med", "Q3", "max"), transpose = TRUE, 
+      omit.headings = TRUE, style = "rmarkdown")
+```
+
+```{r histAge}
+ggplot(data = di, aes(x = age)) +
+ geom_histogram(aes(y = (..count..)/sum(..count..)), binwidth = 1) +
+ xlab("Age (in years)") + 
+ ylab("Share of respondents")
+```
+
+\clearpage
+
+# Country-level analysis data set: `country-analysis.rds`
+
+The country-level data set contains one observation for each of the `r length(unique(di$CountryName))` countries included in the individual-level data set. The country-level data set contains three variables: `CM_SATIS`, `exp`, and `inc`. Definitions, summary statistics and illustrations of the distributions of those three variables are shown below.
+
+### Variable name: `CM_SATIS`
+
+- Source: Pew data set
+- Values: Real numbers from 0 through 10
+- Definition: Mean value of `SATIS` for all respondents from the country
+
+```{r descrCmSatis, results = "asis"}
+# summary(dc$cm_satis)
+descr(dc$cm_satis, stats = c("mean", "sd", "min", "Q1", "med", "Q3", "max"), transpose = TRUE, 
+      omit.headings = TRUE, style = "rmarkdown")
+```
+
+```{r histCmSatis}
+ggplot(data = dc, aes(x = cm_satis)) +
+  geom_histogram(binwidth = 1) +
+  xlab("Country mean satisfaction") + 
+  ylab("# of countries")
+```
+
+\clearpage
+
+### Variable name: `exp`
+
+- Source: WDI
+- Values: Positive real numbers
+- Definition: General government consumption expenditure for 2002, as a percentage of GDP
+
+
+```{r descrExp, results = "asis"}
+# summary(dc$exp)
+descr(dc$exp, stats = c("mean", "sd", "min", "Q1", "med", "Q3", "max"), transpose = TRUE, 
+      omit.headings = TRUE, style = "rmarkdown")
+```
+
+```{r histExp}
+ggplot(data = dc, aes(x = exp)) +
+  geom_histogram(binwidth = 4) +
+  xlab("Government consumption, % of GDP") + 
+  ylab("# of countries")
+```
+
+\clearpage
+
+### Variable name: `inc`
+
+- Source: WDI
+- Values: Positive real numbers
+- Definition: Income per capita for 2002, current US dollars
+
+
+```{r descrInc, results = "asis"}
+# summary(dc$inc)
+descr(dc$inc, stats = c("mean", "sd", "min", "Q1", "med", "Q3", "max"), transpose = TRUE, 
+      omit.headings = TRUE, style = "rmarkdown")
+```
+
+```{r histInc}
+ggplot(data = dc, aes(x = inc)) +
+  geom_histogram() +
+  xlab("GDP per capita (current [2002] $ US)") + 
+  ylab("# of countries")
+```
+
+```{r extractrcode, eval = FALSE, echo = FALSE}
+# Note: this command extracts the R code from this .Rmd file and 
+# creates a pure R script, then places it in the 
+# Command-Files folder. Highlight and run the next two lines if you wish to 
+# generate the R script.
+purl(input = "3-data-appendix.Rmd", output = "4-data-appendix.R")
+file.rename("4-data-appendix.R", "../Command-Files/4-data-appendix.R")
+```

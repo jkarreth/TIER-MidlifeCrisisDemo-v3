@@ -1,0 +1,187 @@
+---
+title: "Money, Happiness and the Midlife Crisis"
+author:
+- Ellsworth Dägg (Lecturer in Economics and Horticulture, Wallywell University)
+- Picard Janné (Director of Research, Joint Economic and Statistical Taskforce)
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  pdf_document: 
+    fig_caption: yes
+    keep_tex: no
+  html_document:
+    self_contained: yes
+bibliography: bibliography.bib
+tags:
+- nothing
+- nothingness
+abstract: |
+  This paper examines evidence from a multi-country survey of subjective well-being (SWB) to investigate two questions. The first is whether the survey shows evidence of the existence of a phenomenon that can be interpreted as a midlife crisis. The second is whether there is any evidence of an association between a country's average SWB and each of two macro indicators, GPD per capita and government consumption expenditure. The analysis provides evidence of an upside-down inverted U relationship between SWB and age, with minimum SWB occurring within a few years of 50. 
+---
+
+```{r fileinfo, echo = FALSE}
+### 
+# Created by Johannes Karreth
+# Last updated:  2018-05-24
+# Written for R 3.5.0, Mac OS X 
+### 
+```
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# command_dir <- dirname(rstudioapi::getSourceEditorContext()$path)
+# setwd(command_dir)
+library("knitr")
+library("tidyverse")
+library("texreg")
+```
+
+```{r dataprep, eval = FALSE, echo = FALSE}
+# Note: These command files create the data used in this paper.
+# eval is set to FALSE because these scripts need not be run each 
+# time the paper is compiled.
+source("../Command-Files/1-import-wdi.R")
+source("../Command-Files/2-import-pew.R")
+source("../Command-Files/3-processing.R")
+```
+
+```{r loaddata, echo = FALSE}
+dc <- readRDS("../Analysis-Data/country-analysis.rds")
+di <- readRDS("../Analysis-Data/individual-analysis.rds")
+```
+
+# Introduction
+
+This paper examines evidence from a multi-country survey of subjective well-being (SWB) to investigate two questions. The first is whether the survey shows evidence of the existence of a phenomenon that can be interpreted as a midlife crisis. The second is whether there is any evidence of an association between a country's average SWB and each of two macro indicators, GPD per capita and government consumption expenditure.
+
+The policy relevance and intellectual significance of these questions has been verified by introspection. Trust us.[^1]
+
+[^1]: This paragraph is a rip-off from Matthew Rabin, who made a similar quip during a seminar he gave at UC Berkeley around 1990 or 1991 (about a new concept he was developing called fairness equilibrium).
+
+The regression analysis of the survey data reported in this paper suggests that, across the lifespan, SWB follows the classic inverted U pattern, but turned upside down.[^2]
+
+[^2]: Commentators not well-versed in economics sometimes reveal their lack of sophistication by calling this pattern a U.
+
+The nature of the association we observe between country averages of SWB and GDP per capita depends heavily on one influential case, namely the United States. When the US is included in the sample, one can argue for a positive association; if the US is excluded, there is weak evidence of a negative association.
+
+The association between SWB and government consumption appears to be negative, although the US is again an outlier. The evidence for the negative association becomes clearer when the US is excluded.
+
+# Previous literature
+
+This paper contributes to large and still growing literature that uses surveys of SWB to investigate a variety of socio-economic questions.
+
+The seminal work in this literature is @Easterlin1974, which focused on the association between SWB and various notions of income and socio-economic status. By one interpretation, Easterlin's results suggest that we should expect to find little association between average income and average happiness in cross-sectional, country-level data.
+
+The pattern of SWB over the life cycle has been studied by @BlanchflowerOswald2008, who find evidence of a U-shaped trajectory. They apparently fail to recognize, however, the deep resonance - of an anti-isomorphic nature - of the trajectory they observe with the classic inverse U pattern.
+
+# Data
+
+The survey data used in this paper are taken from @Pew2002a. This survey consisted of interviews of between about 500 and 2,500 individuals conducted in each of 44 countries in 2002.
+
+In 37 of the countries included in the Pew survey, the number of respondents was less than 900. We chose to drop all observations from those 37 countries, which left us with a sample of individuals from 7 countries: China, India, Indonesia, Jordan, Pakistan, the Russian Federation and the United States. Of the many variables based on respondents' answers to social, political and economic questions, two were extracted for this paper. We gave these variables the names `SATIS` and `AGE`.
+
+The variable `SATIS` is our measure of SWB. Values of this variable were elicited as follows: Respondents were presented with a vertically ordered scale of integers, ranging from 10 at the top of the scale to 0 at the bottom, and the interviewer then asked:
+
+> Here is a ladder representing the "ladder of life." Let's suppose the top [a value of 10] of the ladder represents the best possible life for you; and the bottom [a value of 0], the worst possible life for you. On which step of the ladder do you feel you personally stand at the present time? [@Pew2002b, p. 6]
+
+The variable `AGE` represents the respondent's age in years at the time of her or his last birthday. We also generated the variable `AGE-SQUARED` to use in the exploration of a possible non-linear association between age and SWB.
+
+Two macro indicators were taken from @WorldBank2018. `GDP_PC` shows the income per capita of each country for 2002, expressed in current US dollars. `GOV_CON` shows government consumption expenditure as a share of GDP, again for 2002.
+
+The variable `CM_SATIS`, representing country means of `SATIS`, was constructed for use as a measure of SWB in country-level analyses .
+
+# Descriptive statistics
+
+Table 1 shows the values of `CM_SATIS`, `GDP_PC` and `GOV_CONS` for each of the seven countries in the sample.
+
+```{r table1, echo = FALSE}
+table1 <- select(dc, -ccode_pew)
+table1 <- arrange(table1, CountryName)
+names(table1) <- c("Country", "Mean Satis.", "GDP per capita", "Gov. Cons.")
+kable(table1, 
+      digits = 2,
+      caption = "Mean Satisfaction, GPD per capita and Government Consumption by Country")
+```
+
+# Analysis and results
+
+To investigate whether the data contain evidence of the phenomenon of a midlife crisis, we did an OLS regression of `SATIS` against `AGE` and `AGE_SQUARED`. The results of this regression are shown in Column 1 of Table 2.
+
+```{r regressions, echo = FALSE}
+r1 <- lm(satis ~ age + age2, data = di)
+r2 <- lm(satis ~ age + age2 + factor(CountryName), data = di)
+```
+
+```{r table2, results = 'asis', echo = FALSE}
+# Note: comment out the texreg function if knitting to HTML,
+#   or comment out the htmlreg function if knitting to PDF.
+
+texreg(list(r1, r2),
+       custom.coef.names = c("Constant", "Age", "Age squared"),
+       omit.coef = "factor",
+       digits = 3,
+       caption = "Regression results",
+       caption.above = TRUE,
+       bold = 0.05, stars = 0,
+       custom.note = "Standard errors in parentheses. Coefficients with $p < 0.05$ in bold font.")
+
+# htmlreg(list(r1, r2),
+#        custom.coef.names = c("Constant", "Age", "Age squared"),
+#        omit.coef = "factor",
+#        digits = 3,
+#        caption = "Regression results",
+#        caption.above = TRUE,
+#        custom.model.names = c("Pooled", "Country fixed effects"),
+#        bold = 0.05, stars = 0,
+#        custom.note = "Standard errors in parentheses. Coefficients with p < 0.05 in bold font.")
+```
+
+We ran another OLS regression of `SATIS` against `AGE` and `AGE_SQUARED`, this time including country fixed effects. The results of this regression are shown in Column 2 of Table 2.
+
+In both regressions, the coefficient on `AGE` is negative and the coefficient on and `AGE_SQUARED` is positive, and in all four cases the p-values are below 0.0005. In both regressions, therefore, the fitted value of `SATIS` follows an upside-down inverted-U pattern with respect to `AGE`, and reaches a unique interior minimum. We will call the age at which the minimum fitted value of `SATIS` occurs the "age of minimum SWB."
+
+If we use $\hat{\beta}_{AGE}$ to represent the estimated coefficient on `AGE` and $\hat{\beta}_{AGE-SQUARED}$ to represent the estimated coefficient on `AGE-SQUARED`, then the age of minimum SWB is equal to $-\frac{\hat{\beta}_{AGE}}{2\hat{\beta}_{AGE-SQUARED}}$. Using the estimated coefficients from our regressions we find:
+
+- Column 1 (no country fixed effects): Age at minimum SWB = `r round(-coef(r1)[2]/(2 * coef(r1)[3]), digits = 2)`
+- Column 2 (with country fixed effects): Age at minimum SWB = `r round(-coef(r2)[2]/(2 * coef(r2)[3]), digits = 2)`
+
+Depending on which specification we use, we find that the age at minimum SWB is about `r 47.76` years or `r 53.90` years. We interpret this pattern, in which estimated age at minimum SWB is within a few years of 50, as evidence in favor of a phenomenon that can be called a midlife crisis.[^3]
+
+[^3]: A careful analysis would include also things like robustness tests and other forms of sensitivity analysis, as well as consideration of the magnitude or practical significance of the estimated coefficients. To maintain the realism of this paper as an example of economic research, such considerations are omitted.
+
+To examine the association between country means of SWB and GDP per capita, we construct the scatterplot shown in Figure 1. The OLS line through those points would probably be upward sloping, and maybe even statistically significant. However, such a result would be influenced heavily by the observation for the US. It appears that if the US were dropped from the sample, the association might in fact be negative.
+
+```{r figure1, echo = FALSE, fig.cap = "Scatterplot of GDP per capita and mean satisfaction", fig.align = "center"}
+ggplot(data = dc, aes(x = inc, y = cm_satis)) + 
+  geom_point() + 
+  geom_text(aes(label = CountryName), vjust = "inward", hjust = "inward") + 
+  xlab("GDP per capita (current [2002] $ US)") + 
+  ylab("Country mean satisfaction")
+```
+
+To examine the association between country means of SWB and GDP per capita, we construct the scatterplot shown in Figure 2. The OLS line through those points would probably be downward sloping, and maybe even statistically significant. Again, however, the US is an outlier. In this case, it appears that dropping the US would lead to a much cleaner negative association.
+
+```{r figure2, echo = FALSE, fig.cap = "Scatterplot of General Government Consumption and mean satisfaction", fig.align = "center"}
+ggplot(data = dc, aes(x = exp, y = cm_satis)) + 
+  geom_point() + 
+  geom_text(aes(label = CountryName), vjust = "inward", hjust = "inward") + 
+  xlab("Government consumption, % of GDP") + 
+  ylab("Country mean satisfaction")
+```
+
+# Conclusion
+
+The analysis presented in this paper provides evidence of an upside-down inverted U relationship between SWB and age, with minimum SWB occurring within a few years of 50. This result is consistent with the findings of @BlanchflowerOswald2008. The country-level, cross-sectional associations between mean SWB and GDP per capita and between mean SWB and government consumption expenditures depend heavily on whether the US is included in the sample.
+
+```{r extractrcode, eval = FALSE, echo = FALSE}
+# Note: this command extracts the R code from this .Rmd file and 
+# creates a pure R script, then places it in the 
+# Command-Files folder. Highlight and run the next two lines if you wish to 
+# generate the R script.
+purl(input = "2-Midlife-Crisis-paper.Rmd", output = "5-analysis.R")
+file.rename("5-analysis.R", "../Command-Files/5-analysis.R")
+```
+
+\clearpage
+
+# References
+

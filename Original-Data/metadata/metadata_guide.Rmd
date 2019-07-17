@@ -1,0 +1,58 @@
+---
+title: "Metadata Guide"
+author: Dägg and Janné, *Money, Happiness and the Midlife Crisis*
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: html_document
+---
+
+This study uses data from two data sources, which are preserved in this documentation with the names `original-pew.sav` and `wdi.rds`.
+
+### Supporting information for `original-pew.sav`
+
+Bibliographic citation:
+
+- Pew Research Center Global Attitudes Project (2002a). SUMMER 2002 SURVEY DATA: 44- Nation Survey Conducted July 2-October 31, 2002 [Dataset]. Accessed at http://www.pewglobal.org/category/datasets/2002/, June 1, 2014.
+
+Accessing the data:
+
+- A zipped folder containing the data file used for this paper as well as supporting information can be downloaded from the URL given above. The data file contained in the zipped folder is named "Pew GAP final 44 country dataset 1.1sav.sav" [sic]. In the documentation preserved with this paper, the name of this file has been changed to original-pew.sav.
+- No DOI has been assigned to this data set. 
+
+Additional information:
+
+- Definitions and coding of all the variables in original-pew.sav can be found in a document named "Pew GAP Survey details 1.1", a copy of which can be found in the `Supplements` folder located within the `Metadata` folder of this documentation. This document was included in the zipped folder containing the original data file that was downloaded from http://www.pewglobal.org/category/datasets/2002/ on June 1, 2014.
+
+### Supporting information for `wdi.rds`
+
+Bibliographic citation:
+
+- World Bank (2018). World Development Indicators On-line. Accessed at http://data.worldbank.org/data-catalog/world-development-indicators, June 1, 2014. 
+
+Accessing the data:
+
+- This data file was extracted from the World Development Indicators API using the R package WDI. Through the API, we selected data for two series, 7 countries and one year:
+  + Series: 
+    * GDP per capita (in current [2002] US dollars): `NY.GDP.PCAP.CD`
+    * Government consumption expenditure (percentage of GDP): `NE.CON.GOVT.ZS`
+  + Countries: China, India, Indonesia, Jordan, Pakistan, Russian Federation, US
+  + Year: 2002
+- These data were exported into a data file named `wdi.rds`.
+- No DOI has been assigned to this data set. 
+
+Additional information:
+
+- The following definitions of the two variables we extracted from the WDI were downloaded interactively from http://data.worldbank.org/data-catalog/world-development-indicators.
+  + GDP per capita (in current [2002] US dollars): GDP per capita is gross domestic product divided by midyear population. GDP is the sum of gross value added by all resident producers in the economy plus any product taxes and minus any subsidies not included in the value of the products. It is calculated without making deductions for depreciation of fabricated assets or for depletion and degradation of natural resources. Data are in current U.S. dollars. 
+    * Code: `NY.GDP.PCAP.CD`. 
+    * Data Type: Time Series 
+    * Periodicity: Annual 
+    * Dataset: World Development Indicators 
+    * Source: World Bank national accounts data, and OECD National Accounts data files. 
+    * Last Updated: Mar 01,2018
+  + Government consumption expenditure (percentage of GDP): General government final consumption expenditure (formerly general government consumption) includes all government current expenditures for purchases of goods and services (including compensation of employees). It also includes most expenditures on national defense and security, but excludes government military expenditures that are part of government capital formation.
+    * Code: `NE.CON.GOVT.ZS`
+    * Data Type: Time Series 
+    * Periodicity: Annual 
+    * Dataset: World Development Indicators 
+    * Source: World Bank national accounts data, and OECD National Accounts data files. 
+    * Last Updated: Mar 01,2018

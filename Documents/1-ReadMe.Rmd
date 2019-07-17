@@ -1,0 +1,125 @@
+---
+title: "Read Me File"
+author: Dägg and Janné, *Money, Happiness and the Midlife Crisis*
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: html_document
+---
+
+The replication documentation that this Read Me file accompanies was constructed by [Johannes Karreth](www.jkarreth.net) according to the Specifications of the TIER Protocol (version 3.0).
+
+The data management and analysis for this paper were conducted with R version 3.5.0 (accessed through RStudio version 1.1.442) on Mac OS X 10.13.4. Minor modifications may be required to run the R and RMarkdown scripts on a Windows operating system. Readers should be familiar with R, the "tidyverse" collection of R packages, and RStudio in order to reproduce this paper. For seamless reproduction, the `.Rmd` files in this project are best compiled using the "Knit" interface in RStudio.
+
+### Computing requirements
+
+This project requires the following software to be installed:
+
+- R (version [3.5.0](https://cran.r-project.org) or higher)
+- RStudio Desktop (version [1.1.453](https://www.rstudio.com/products/rstudio/download/) or higher)
+- Pandoc (version [2.2.1](https://pandoc.org/installing.html) or higher)
+- A basic LaTeX system, such as [MiKTeX](https://miktex.org/download)
+
+In addition, the following R packages need to be installed for this project. For each package, dependencies must be installed as well. 
+
+- WDI (version 2.5 or higher)
+- rio (version 0.5.10 or higher)
+- tidyverse (version 1.2.1 or higher)
+- knitr (version 1.20 or higher)
+- texreg (version 1.36.23 or higher)
+- summarytools (version 0.8.3 or higher)
+
+The following code installs these packages. It needs to be executed only once. The scripts in this project load the packages where needed.
+
+```{r, eval = FALSE}
+install.packages(c("WDI", "rio", "tidyverse", "knitr", "texreg", "summarytools"),
+                 dependencies = TRUE)
+```
+
+### The content and organization of the replication documentation
+
+The documentation for the paper is stored in folders that are organized as illustrated below:
+
+- `Replication-Documentation` (the main folder):
+  + `Documents` (sub-folder of the of the `Replication-Documentation` folder)
+    * `1-ReadMe.html`: This document.
+    * `2-Midlife-Crisis-paper.html`: The research paper for which this replication documentation has been prepared.
+    * `3-data-appendix.html`: Documentation of the processed data files used for the analysis reported in the paper.
+    * `bibliography.bib`: a bibtex file containing bibliographic information for the references in the paper. This file can be opened and edited with [BibDesk](https://bibdesk.sourceforge.io), [JabRef](http://jabref.sourceforge.net/), or any text editor.
+  + `Original-Data` (sub-folder of the of the `Replication-Documentation` folder):
+    * `original-pew.sav`: Data file formatted for SPSS.
+    * `Metadata` (sub-folder of the of the `Original-Data` folder):
+      + `metadata-guide.html`: Information about the sources, content and format of the files in the `Original-Data` folder.
+      + `Pew-GAP-Survey-details-1.1.pdf`: Codebook for the original data file original-pew.sav.
+  + `Command-Files` (sub-folder of the of the `Replication-Documentation` folder):
+    * `1-import-wdi.R`: Imports WDI data via the WDI API
+    * `2-import-pew.R`: Imports Pew data
+    * `3-processing.R`: Merges WDI and Pew data and prepares data for analysis
+    * `4-data-appendix.R`: Generates tables and figures in `3-data-appendix.html`
+    * `5-analysis.R`: Generates tables and figures in `2-Midlife-Crisis-paper.html`
+  + `Importable-Data` (sub-folder of the of the `Replication-Documentation` folder): 
+    * `pew.rds`: Pew data, ready for import into R
+    * `wdi.rds`: WDI data, ready for import into R
+  + `Analysis-Data` (sub-folder of the of the `Replication-Documentation` folder):
+    * `country-analysis.rds`: Processed data file used for the country-level analysis reported in the paper.
+    * `individual-analysis.rds`: Processed data file used for the individual-level analysis reported in the paper.
+    
+In addition, each folder contains a separate `README.md` file. These files describe the general purpose and content of the folder. They are pulled from the [TIER Documentation Protocol v3.0 for R](https://github.com/ProjectTIER/ProjectTIER_R), originally created by [Mine Cetinkaya-Rundel](https://github.com/mine-cetinkaya-rundel) and revised by [Amelia McNamara](https://github.com/AmeliaMN).
+
+### Notes on generating the importable data files
+
+- `pew.rds` is created after reading the original PEW survey data (in SPSS format) into R using the "rio" package, which is an easy-to-use wrapper for a variety of import/export functions from different packages.
+- `wdi.rds` is generated after accessing the World Development Indicators API using the "WDI" package.
+
+### To reproduce the tables, figures and statistical results reported in the text of the paper
+
+1. Copy the `Replication-Documentation` folder, and all of its contents, onto the computer you are working on.
+2. Launch RStudio. Note: Throughout the entire process of replicating the results of the paper, RStudio's working directory does not need to be changed; it is automatically set to the directory of the respective scripts that are open in RStudio. Name teh WD here (the scripts folder) Commands that save or open files specify the path to the directory where the file is to be saved or opened relative to the folder in which the script is located.
+3. Execute the `1-import-wdi.R` command file. This command file:
+  - accesses the World Development Indicators from the WDI API using the "WDI" package
+  - selects the relevant variables, countries, and time period
+  - saves the modified data in the `Importable-Data` folder, with the name `wdi.rds`.
+3. Execute the `2-import-pew.R` command file. This command file:
+  - opens the data in the `original-pew.sav` file
+  - modifies the data
+  - saves the modified data in the `Importable-Data` folder, with the name `pew.rds`.  
+5. Execute the command file named `3-processing.R` (which is in the `Command-Files` folder). This command file:
+  - merges the `pew.rds` file (which was created by the `2-import-pew.R` command file and saved in the `Importable-Data` folder) with `wdi.rds` (which was created by the `1-import-wdi.R` command file and saved in the `Importable-Data` folder)
+  - saves the merged data file in the `Analysis-Data` folder, with the name `individual-analysis.rds`. This is the data set used for the individual-level analysis reported in the paper.
+  - converts the individual-level dataset into a country-level dataset, in which the value of each individual-level variable is transformed to the mean value for all individuals in the same country, and saves this converted data file in the `Analysis-Data` folder, with the name `country-analysis.rds`. This is the data set used for the country-level analysis reported in the paper.
+6. Move to the `Documents` folder and open the file `2-Midlife-Crisis-paper.Rmd`. This file contains commands and text that generate the complete paper. It also creates an R script version of all commands necessary to generate only tables and figures. This script is named `5-analysis.R` and located in the `Command-Files` folder.
+7. Open the file `3-data-appendix.Rmd`. This file contains commands and text that generate the data appendix. This script is named `4-data-appendix.R` and located in the `Command-Files` folder.
+
+### R Session Info after completing this project
+
+```
+R version 3.5.0 (2018-04-23)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: macOS High Sierra 10.13.4
+
+Matrix products: default
+BLAS: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] bindrcpp_0.2.2     forcats_0.3.0      stringr_1.3.0      dplyr_0.7.4        purrr_0.2.4       
+ [6] readr_1.1.1        tidyr_0.8.0        tibble_1.4.2       ggplot2_2.2.1.9000 tidyverse_1.2.1   
+[11] rio_0.5.10         WDI_2.5            RJSONIO_1.3-0     
+
+loaded via a namespace (and not attached):
+ [1] reshape2_1.4.3      haven_1.1.1         lattice_0.20-35     colorspace_1.3-2    htmltools_0.3.6    
+ [6] yaml_2.1.18         rlang_0.2.0.9001    pillar_1.2.2        withr_2.1.2         foreign_0.8-70     
+[11] glue_1.2.0          modelr_0.1.1        readxl_1.1.0        bindr_0.1.1         plyr_1.8.4         
+[16] munsell_0.4.3       gtable_0.2.0        cellranger_1.1.0    rvest_0.3.2         evaluate_0.10.1    
+[21] psych_1.8.3.3       knitr_1.20          parallel_3.5.0      curl_3.2            broom_0.4.4        
+[26] Rcpp_0.12.17        backports_1.1.2     scales_0.5.0.9000   jsonlite_1.5        mnormt_1.5-5       
+[31] digest_0.6.15       hms_0.4.2           stringi_1.1.7       openxlsx_4.0.17     rprojroot_1.3-2    
+[36] grid_3.5.0          cli_1.0.0           tools_3.5.0         magrittr_1.5        lazyeval_0.2.1     
+[41] crayon_1.3.4        pkgconfig_2.0.1     data.table_1.10.4-3 xml2_1.2.0          lubridate_1.7.4    
+[46] rmarkdown_1.9       assertthat_0.2.0    httr_1.3.1          rstudioapi_0.7      R6_2.2.2           
+[51] nlme_3.1-137        compiler_3.5.0  
+```
